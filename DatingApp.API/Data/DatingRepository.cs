@@ -68,6 +68,8 @@ namespace DatingApp.API.Data
                                         break;
             }
 
+            var count = await users.CountAsync();
+
             users = users.Include(u => u.Photos);
             if(!string.IsNullOrEmpty(userParams.OrderBy)) {
                 switch (userParams.OrderBy){
@@ -77,7 +79,9 @@ namespace DatingApp.API.Data
             } else {
                 users = users.OrderByDescending(u => u.LastActive); 
             }
-            return await PagedList<User>.CreateAsync(users, userParams.PageNumber, userParams.PageSize);
+
+            
+            return await PagedList<User>.CreateAsync(count ,users, userParams.PageNumber, userParams.PageSize);
         }
 
         private async Task<IEnumerable<int>> GetUserLikes(int id, TypeOfLike typeOfLike){
@@ -104,8 +108,6 @@ namespace DatingApp.API.Data
         public async Task<PagedList<Message>> GetMessagesForUser(MessageParams messageParams)
         {
             var messages = _context.Messages.AsQueryable();
-            messages = messages.Include(m => m.Sender).ThenInclude(u => u.Photos);
-            messages = messages.Include(m => m.Recipient).ThenInclude(u => u.Photos);
 
             switch (messageParams.MessageContainer) {
                 case "Inbox": messages = messages.Where(m => m.RecipientId == messageParams.UserId && m.RecipientDeleted == false);
@@ -115,9 +117,13 @@ namespace DatingApp.API.Data
                 default: messages = messages.Where(m => m.RecipientId == messageParams.UserId && m.IsRead == false && m.RecipientDeleted == false);
                 break; // Unread
             }
+            var count = await messages.CountAsync();
+
+            messages = messages.Include(m => m.Sender).ThenInclude(u => u.Photos);
+            messages = messages.Include(m => m.Recipient).ThenInclude(u => u.Photos);
             messages = messages.OrderByDescending(m => m.SentTime);
 
-            return await PagedList<Message>.CreateAsync(messages, messageParams.PageNumber, messageParams.PageSize);
+            return await PagedList<Message>.CreateAsync(count, messages, messageParams.PageNumber, messageParams.PageSize);
         }
 
         public async Task<IEnumerable<Message>> GetMessagesThread(int userId, int recipientId)
