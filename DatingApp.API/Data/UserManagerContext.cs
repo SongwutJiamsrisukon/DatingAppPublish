@@ -20,7 +20,7 @@ namespace DatingApp.API.Data
 
         public override async Task<User> FindByNameAsync(string username)
         {
-            return await _context.Users.Include(u => u.Photos).SingleOrDefaultAsync(x => x.UserName.ToLower() == username);
+            return await _context.Users.Include(u => u.Photos).SingleOrDefaultAsync(x => x.UserName.ToLower() == username.ToLower());
         }
     }
 }

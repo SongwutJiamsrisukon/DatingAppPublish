@@ -20,6 +20,9 @@ export class ErrorInterceptor implements HttpInterceptor {
                     if (error.status === 401) {
                         return throwError(error.statusText);
                     }
+                    if (error.status === 403) {
+                        return throwError(error.statusText);
+                    }
                     const serverError = error.error; // handle BadRequest, In dotnet 2.2 use error.error.errors instead
                     let modelStateError = ''; // ต่างจาก var ตรงที่ เมื่อประกาศ let variable ไว้ 2 ตำแหน่ง คือในและนอก scope
                                                 // เมื่อ ออกนอก scope แล้ว print มันจะเลือก let variable ที่อยู่นอก scope

@@ -24,13 +24,7 @@ namespace DatingApp.API.Data
                 {
                     roleManager.CreateAsync(role).Wait();
                 }
-                
-                foreach (var user in users)
-                {
-                    userManager.CreateAsync(user, "password").Wait();//this is not async method use Wait() instead
-                    userManager.AddToRoleAsync(user, "Member").Wait();
-                }
-
+               
                 var adminUser = new User{
                     UserName = "admin"
                 };
@@ -41,6 +35,12 @@ namespace DatingApp.API.Data
                 {
                     var admin = userManager.FindByNameAsync("admin").Result;
                     userManager.AddToRolesAsync(admin, new[] {"Admin","Moderator"});
+                }
+                
+                foreach (var user in users)
+                {
+                    userManager.CreateAsync(user, "password").Wait();//this is not async method use Wait() instead
+                    userManager.AddToRoleAsync(user, "Member").Wait();
                 }
                 //context.SaveChanges(); UserManager automatic SaveChanges
             }

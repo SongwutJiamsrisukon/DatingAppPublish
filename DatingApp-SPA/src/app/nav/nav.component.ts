@@ -42,6 +42,7 @@ export class NavComponent implements OnInit {
     );
   }
 
+  // don't use anywhere be cause we use HasRoleDirectives Instead of this
   checkRole() {
     const canUseRoles: Array<string> = ['Admin', 'Moderator'];
     return this.authService.roleMatch(canUseRoles);

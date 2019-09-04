@@ -24,11 +24,11 @@ namespace DatingApp.API.Controllers
     {
         private readonly IConfiguration _config;
         private readonly IMapper _mapper;
-        private readonly UserManagerInclude _userManager; //userManager used to find User in DB
+        private readonly UserManager<User> _userManager; //userManager used to find User in DB
         
         private readonly SignInManager<User> _signInManager; //signInManager to check user password
         public AuthController(IConfiguration config, IMapper mapper, 
-        UserManagerInclude userManager, SignInManager<User> signInManager)//inject repo and configuration
+        UserManager<User> userManager, SignInManager<User> signInManager)//inject repo and configuration
         {
             _mapper = mapper;
             _config = config;
