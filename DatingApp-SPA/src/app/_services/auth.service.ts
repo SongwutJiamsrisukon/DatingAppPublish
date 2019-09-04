@@ -60,11 +60,18 @@ export class AuthService {
   register(user: User) {
     return this.http.post(this.baseUrl + 'register', user);
   }
-  /*
-  register(model: any) {
-    return this.http.post(this.baseUrl + 'register', model);
-  }
-  */
 
+  roleMatch(allowRoles): boolean {
+    let isMatch = false;
+    const userRoles = this.decodeToken.role as Array<string>;
+
+    allowRoles.forEach(element => {
+      if (userRoles.includes(element)) { // had some include it return true
+        isMatch = true;
+        return; // out for each
+      }
+    });
+    return isMatch;
+  }
 
 }

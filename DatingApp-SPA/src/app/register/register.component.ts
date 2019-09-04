@@ -60,7 +60,7 @@ export class RegisterComponent implements OnInit {
     // }
   }
 
-  cancel(){
+  cancel() {
     this.cancelRegister.emit(false); /**parameter can use as object or simple bool like false */
   }
 }

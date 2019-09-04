@@ -41,4 +41,9 @@ export class NavComponent implements OnInit {
       }
     );
   }
+
+  checkRole() {
+    const canUseRoles: Array<string> = ['Admin', 'Moderator'];
+    return this.authService.roleMatch(canUseRoles);
+  }
 }
