@@ -34,7 +34,7 @@ namespace DatingApp.API.Data
                 if(result.Succeeded)
                 {
                     var admin = userManager.FindByNameAsync("admin").Result;
-                    userManager.AddToRolesAsync(admin, new[] {"Admin","Moderator"});
+                    userManager.AddToRolesAsync(admin, new[] {"Admin","Moderator"}).Wait();
                 }
                 
                 foreach (var user in users)
