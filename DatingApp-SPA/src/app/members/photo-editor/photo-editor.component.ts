@@ -5,7 +5,6 @@ import { environment } from 'src/environments/environment';
 import { AuthService } from 'src/app/_services/auth.service';
 import { UserService } from 'src/app/_services/user.service';
 import { AlertifyService } from 'src/app/_services/alertify.service';
-import { isDefined } from '@angular/compiler/src/util';
 
 @Component({
   selector: 'app-photo-editor',
@@ -69,7 +68,7 @@ export class PhotoEditorComponent implements OnInit {
   setMainPhoto(photo: Photo) {
     this.userService.setMainPhoto(this.authService.decodeToken.nameid, photo.id).subscribe( () => {
 
-      if (isDefined(this.photos.filter(p => p.isMain)[0])) {
+      if (this.photos.filter(p => p.isMain)[0]) {
       this.currentMainPhoto = this.photos.filter(p => p.isMain)[0]; // return copy of photo array, we need one so we use [0]
       this.currentMainPhoto.isMain = false;
       }
