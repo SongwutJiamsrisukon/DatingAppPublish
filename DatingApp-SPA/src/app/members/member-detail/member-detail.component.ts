@@ -5,6 +5,7 @@ import { AlertifyService } from 'src/app/_services/alertify.service';
 import { ActivatedRoute } from '@angular/router';
 import { NgxGalleryOptions, NgxGalleryImage, NgxGalleryAnimation } from 'ngx-gallery';
 import { TabsetComponent } from 'ngx-bootstrap';
+import { AuthService } from 'src/app/_services/auth.service';
 
 @Component({
   selector: 'app-member-detail',
@@ -19,7 +20,8 @@ export class MemberDetailComponent implements OnInit {
 
   @ViewChild('memberTabs', {static: true}) memberTabs: TabsetComponent;
 
-  constructor(private userService: UserService, private alertify: AlertifyService, private route: ActivatedRoute) { }
+  constructor(private authService: AuthService, private userService: UserService,
+     private alertify: AlertifyService, private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.route.data.subscribe(data => {
@@ -46,7 +48,7 @@ export class MemberDetailComponent implements OnInit {
 
   } // end ngOnInit
 
-  selectTab(tabId: number){
+  selectTab(tabId: number) {
     this.memberTabs.tabs[tabId].active = true;
   }
 
@@ -63,5 +65,13 @@ export class MemberDetailComponent implements OnInit {
       );
     }
     return imageUrls;
+  }
+
+  sendLike(id: number) {
+    this.userService.sendLike(this.authService.decodeToken.nameid, id).subscribe(() => {
+      this.alertify.success('You have liked: ' + this.user.knownAs);
+    }, e => {
+      this.alertify.error(e);
+    });
   }
 }

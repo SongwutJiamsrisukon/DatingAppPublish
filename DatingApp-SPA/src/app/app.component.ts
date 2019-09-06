@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from './_services/auth.service';
 import {JwtHelperService} from '@auth0/angular-jwt';
 import { LocalUserData } from './_models/localUserData';
+import { isUndefined } from 'util';
 
 @Component({
   selector: 'app-root',
@@ -22,7 +23,10 @@ export class AppComponent implements OnInit {
     }
     this.authService.decodeToken = this.jwtHelper.decodeToken(token);
     this.authService.localUserData = localUserData;
-    this.authService.changeMemberPhoto(localUserData.photoUrl);
+
+    if (localUserData) {
+      this.authService.changeMemberPhoto(localUserData.photoUrl);
+    }
 
   }
 
