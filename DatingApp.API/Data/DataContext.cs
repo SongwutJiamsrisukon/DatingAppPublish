@@ -16,6 +16,8 @@ namespace DatingApp.API.Data
         protected override void OnModelCreating(ModelBuilder builder){ //overide default entityframework convention(when it created table in ours database)
             base.OnModelCreating(builder);
 
+            builder.Entity<Photo>().HasQueryFilter(p => p.IsApproved); //global query filter
+
             builder.Entity<UserRole>().HasKey(ur => new {ur.UserId, ur.RoleId});
             builder.Entity<UserRole>().HasOne(ur => ur.Role).WithMany(r => r.UserRoles).HasForeignKey(ur => ur.RoleId).IsRequired();
             builder.Entity<UserRole>().HasOne(ur => ur.User).WithMany(r => r.UserRoles).HasForeignKey(ur => ur.UserId).IsRequired();

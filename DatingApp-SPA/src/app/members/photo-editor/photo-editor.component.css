@@ -11,3 +11,18 @@ img.img-thumbnail {
 input[type=file] {
     color: transparent;
 }
+
+.card-img-wrapper {
+    position: relative;
+}
+
+.isApproved-text {
+    position: absolute;
+    bottom: 20%;
+    left: 20%;
+    color: red;
+}
+
+.img-transparent {
+    opacity: 0.3;
+}

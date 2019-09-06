@@ -31,7 +31,7 @@ namespace DatingApp.API.Controllers
         public async Task<IActionResult> GetUsers([FromQuery]UserParams userParams) // [FromQuery] use to know params(?pageNumber=2&pageSize=8) on url, if no params it use default
         {
             var currentUserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
-            var userFromRepo = await _repo.GetUser(currentUserId);
+            var userFromRepo = await _repo.GetUser(currentUserId, true);
             userParams.UserId = currentUserId;
             if(string.IsNullOrEmpty(userParams.Gender)){
                 userParams.Gender = userFromRepo.Gender == "male" ? "female" : "male"; // if male then show female, if any show male
@@ -49,7 +49,9 @@ namespace DatingApp.API.Controllers
         [HttpGet("{id}", Name = "GetUser")] //use action when hit url with httpGet localhost:5000/api/users/{id}
         public async Task<IActionResult> GetUser(int id)
         {
-            var user = await _repo.GetUser(id);
+            var isCurrentUser = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value) == id;
+
+            var user = await _repo.GetUser(id, isCurrentUser);
             
             var userToReturn = _mapper.Map<UserForDetailedDto>(user);
             return Ok(userToReturn);
@@ -63,7 +65,7 @@ namespace DatingApp.API.Controllers
             if (id != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
                 return Unauthorized();
 
-            var userFromRepo = await _repo.GetUser(id);
+            var userFromRepo = await _repo.GetUser(id, true);
             _mapper.Map(userForUpdateDto,userFromRepo);// auto update value in DB but don't save yet
                                                         // if some value in userForUpdateDto is not declare, it is auto generate "" to string
             if(await _repo.SaveAll())
@@ -77,7 +79,7 @@ namespace DatingApp.API.Controllers
             if (id != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
                 return Unauthorized();
             var like = await _repo.GetLike(id, recipientId);
-            if (await _repo.GetUser(recipientId) == null){
+            if (await _repo.GetUser(recipientId, false) == null){
                 return NotFound(); //404
             }
             //end handle error section
@@ -100,7 +102,7 @@ namespace DatingApp.API.Controllers
             if (like != null)
                 return BadRequest("You already like this user");
 
-            if (await _repo.GetUser(recipientId) == null){
+            if (await _repo.GetUser(recipientId, false) == null){
                 return NotFound(); //404
             }
             //end handle error section
