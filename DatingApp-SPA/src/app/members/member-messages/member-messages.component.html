@@ -9,7 +9,7 @@
         <!--to them-->
         <table *ngIf="message.senderId == recipientId" style="width:100%">
           <tr>
-              <th rowspan="2" style="width:1%"><img src="{{message.senderPhotoUrl}}" alt="{{message.senderKnownAs}}" class="rounded-circle"></th>
+              <th rowspan="2" style="width:1%"><img src="{{message.senderPhotoUrl || '../../../assets/user.png'}}" alt="{{message.senderKnownAs}}" class="rounded-circle"></th>
               <th class="align-left">{{message.senderKnownAs}}</th>
               <th class="align-right">
                 <small class="text-muted">
@@ -49,7 +49,7 @@
                 </small>
               </th>
               <th class="align-right">{{message.senderKnownAs}}</th>
-              <th rowspan="2" style="width:1%"><img src="{{message.senderPhotoUrl}}" alt="{{message.senderKnownAs}}" class="rounded-circle"></th>
+              <th rowspan="2" style="width:1%"><img src="{{message.senderPhotoUrl || '../../../assets/user.png'}}" alt="{{message.senderKnownAs}}" class="rounded-circle"></th>
           </tr>
           <tr>
             <th colspan="2" class="align-right"><span class="unbold">{{message.content}}</span></th>
